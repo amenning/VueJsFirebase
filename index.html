@@ -47,6 +47,11 @@
     firebase.initializeApp(config);
 
     const database = firebase.database();
+    const messagesRef = database.ref('messages');
+    //database.ref('who/am/I').set('alex');
+    //database.ref('who').child('am').child('I').set('alex');
+    //database.ref('who').child('am/I').set('alex');
+    //database.ref('who/am/i').set('hootlex');
 
     //database.ref('messages').on('value', snapshot => console.log(snapshot.val()));
     //database.ref('messages').on('child_added', snapshot => console.log(snapshot.val()));
@@ -62,14 +67,13 @@
 
       methods: {
         storeMessage() {
-          this.messages.push({text: this.messageText, nickname: this.nickname});
+          messagesRef.push({text: this.messageText, nickname: this.nickname});
           this.messageText = '';
         }
       },
 
       created() {
-        database.ref('messages')
-          .on('child_added', snapshot => this.messages.push(snapshot.val()));
+        messagesRef.on('child_added', snapshot => this.messages.push(snapshot.val()));
       }
     });
   </script>
